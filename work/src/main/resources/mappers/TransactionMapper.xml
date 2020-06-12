@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jiangrongxin.work.mapper.TransactionMapper">
+    <resultMap id="TranResultMap" type="com.jiangrongxin.work.model.Transaction">
+        <result column="trans_id" jdbcType="INTEGER" property="trans_id" />
+        <result column="cust_id" jdbcType="INTEGER" property="cust_id" />
+        <result column="account" jdbcType="VARCHAR" property="account" />
+        <result column="card_nbr" jdbcType="VARCHAR" property="card_nbr" />
+        <result column="tranno" jdbcType="INTEGER" property="tranno" />
+        <result column="month_nbr" jdbcType="INTEGER" property="month_nbr" />
+        <result column="bill" jdbcType="DECIMAL" property="bill" />
+        <result column="trans_type" jdbcType="VARCHAR" property="trans_type" />
+        <result column="txn_datetime" jdbcType="TIMESTAMP" property="txn_datetime" />
+    </resultMap>
+
+    <select id="getTransactions" resultMap="TranResultMap">
+        select * from transaction
+    </select>
+
+    <select id="getTransactionById" resultType="com.jiangrongxin.work.model.Transaction">
+        select * from transaction where id = #{trans_id}
+    </select>
+
+    <update id="updateTransaction" parameterType="com.jiangrongxin.work.model.Transaction">
+        update transaction set trans_id=#{trans_id},cust_id=#{cust_id}
+        ,account=#{account},card_nbr=#{card_nbr},tranno=#{tranno},month_nbr=#{month_nbr},bill=#{bill},trans_type=#{trans_type},tnx_datetime=#{tnx_datetime}
+    </update>
+
+    <delete id="deleteTransaction" parameterType="INT">
+        delete from transaction where id=#{trans_id};
+    </delete>
+
+    <insert id="saveTransaction" parameterType="com.jiangrongxin.work.model.Transaction">
+        <selectKey keyProperty="trans_id" keyColumn="trans_id" resultType="int" order="AFTER">
+            select last_insert_id();
+        </selectKey>
+        insert into transaction (trans_id,cust_id,account,card_nbr,tranno,month_nbr,bill,trans_type,txn_datetime)values(#{trans_id},#{cust_id}
+        ,#{account},#{card_nbr},#{tranno},#{month_nbr},#{bill},#{trans_type},#{tnx_datetime});
+    </insert>
+
+</mapper>

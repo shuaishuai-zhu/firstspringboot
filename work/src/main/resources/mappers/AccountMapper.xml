@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jiangrongxin.work.mapper.AccountMapper">
+
+    <resultMap id="BaseResultMap" type="com.jiangrongxin.work.model.Account">
+        <result column="cust_id" jdbcType="INTEGER" property="cust_id" />
+        <result column="surname" jdbcType="VARCHAR" property="surname" />
+        <result column="gender" jdbcType="VARCHAR" property="gender" />
+        <result column="educa_des" jdbcType="VARCHAR" property="educa_des" />
+        <result column="mar_des" jdbcType="VARCHAR" property="mar_des" />
+        <result column="birthday" jdbcType="INTEGER" property="birthday" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+    </resultMap>
+    <select id="getAccounts" resultMap="BaseResultMap">
+        select * from account
+    </select>
+
+    <select id="getAccountById" resultType="com.jiangrongxin.work.model.Account">
+        select * from account where id = #{cust_id}
+    </select>
+
+    <update id="updateAccount" parameterType="com.jiangrongxin.work.model.Account">
+        update account set cus_id=#{cust_id},surname=#{surname},gender=#{gender},educa_des=#{educa_des},mar_des=#{mar_des},birthday=#{birthday},address=#{address};
+    </update>
+
+    <delete id="deleteAccount" parameterType="INT">
+        delete from account where id=#{cust_id};
+    </delete>
+
+    <insert id="saveAccount" parameterType="com.jiangrongxin.work.model.Account">
+        <selectKey keyProperty="cust_id" keyColumn="cust_id" resultType="int" order="AFTER">
+            select last_insert_id();
+        </selectKey>
+        insert into account(cust_id,surname,gender,educa_des,mar_des,birthday,address)values(#{cust_id},#{surname},#{gender},#{educa_des},#{mar_des},#{birthday},#{address});
+    </insert>
+
+</mapper>
